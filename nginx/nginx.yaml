@@ -1,0 +1,13 @@
+--- 
+- name: Configure nginx web server
+  hosts: ec2
+  tasks: 
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: latest
+    - name: start nginx
+      service: 
+        name: nginx
+        state: started
+        enabled: yes  # if you want to also enable nginx
