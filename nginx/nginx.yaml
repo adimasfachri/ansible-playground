@@ -1,6 +1,7 @@
 --- 
 - name: Configure nginx web server
   hosts: ec2
+  become: true
   tasks: 
     - name: Install nginx
       apt:
