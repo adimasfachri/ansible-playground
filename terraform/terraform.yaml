@@ -1,0 +1,25 @@
+---
+- name: Automate install terraform
+  hosts: ec2
+  become: true
+  tasks:
+    - name: Download terraform gpg
+      ansible.builtin.get_url:
+        url: https://apt.releases.hashicorp.com/gpg
+        dest: /usr/share/keyrings/hashicorp-archive-keyring
+
+    - name: Convert the PGP key from terraform into a GPG file format
+      shell: |
+        gpg --dearmor /usr/share/keyrings/hashicorp-archive-keyring 
+        rm -rf /usr/share/keyrings/hashicorp-archive-keyring
+
+    - name: Add apt repo 
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
+        state: present
+
+    - name: Update repositories cache and install Terraform package
+      ansible.builtin.apt:
+        name: terraform
+        update_cache: yes
+
