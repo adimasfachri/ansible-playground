@@ -1,0 +1,3 @@
+[loki]
+loki ansible_host=ubuntu@10.12.8.114
+
